@@ -26,3 +26,4 @@ def main():
     else:
         print('Choose from options 1-4')
 
+main()
