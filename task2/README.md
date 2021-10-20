@@ -3,9 +3,7 @@
 ## main.py
 
 ## icmp_discovery.py
-A simple scanner that conducts an ICMP Ping scan to 255 addresses within a network.
-
-Used to identify hosts present within the network.
+A simple scanner that conducts an ICMP Ping scan to 255 addresses within a network. Used to identify hosts present within the network.
 
 ## syn_flooding.py
 A script that takes in the target IP address as an argument, to conduct a SYN flooding attack on the target IP specified. It also includes a source IP spoofer. Packet data, size and target port can be modified.
