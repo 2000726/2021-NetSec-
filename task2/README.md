@@ -2,5 +2,14 @@
 
 ## main.py
 
-## hosts_discovery.py
-Conducts an ICMP Ping scan to 255 addresses within a network. (SLOW)
+## icmp_discovery.py
+A simple scanner that conducts an ICMP Ping scan to 255 addresses within a network.
+Used to identify hosts present within the network.
+
+## syn_Flooding.py
+
+## arp_poisoning.py
+
+## stp_root_attack.py
+
+## eigrp_route_poisoning.pu
