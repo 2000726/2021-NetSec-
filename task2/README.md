@@ -8,7 +8,9 @@ A simple scanner that conducts an ICMP Ping scan to 255 addresses within a netwo
 Used to identify hosts present within the network.
 
 ## syn_flooding.py
-A script that conducts a SYN flooding attack, on a target IP based on the user's specification. It also includes a source IP spoofer. Packet data can be modified.
+A script that takes in the target IP address as an argument, to conduct a SYN flooding attack on the target IP specified. It also includes a source IP spoofer. Packet data, size and target port can be modified.
+
+Usage: python syn_flooding.py -t <IP Address>
 
 ## arp_poisoning.py
 A script that takes in a number of arguments, to conduct an ARP Poisoning attack on the specified target IP and MAC address. IP and Physical address spoofing will be used, as well as specifying amount of packets to send.
