@@ -5,7 +5,6 @@ import logging
 src_spoofed = "200.1.1.14"
 dest_network = "200.1.1."
 hosts = []
-#interface = "eth0"
 
 # Suppress Warning Output
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
