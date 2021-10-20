@@ -11,6 +11,10 @@ Used to identify hosts present within the network.
 A script that conducts a SYN flooding attack, on a target IP based on the user's specification. It also includes a source IP spoofer. Packet data can be modified.
 
 ## arp_poisoning.py
+A script that takes in a number of arguments, to conduct an ARP Poisoning attack on the specified target IP and MAC address. IP and Physical address spoofing will be used, as well as specifying amount of packets to send.
+
+Usage: python arp_poisoning.py -ti <target_ip> -tm <target_mac> -fi <fake_ip> -fm <fake_mac> -c <count>"
+
 
 ## stp_root_attack.py
 
