@@ -26,3 +26,5 @@ except:
   print('[!]Example: -t 10.20.30.40')
   print('[?] -h for help')
   exit()
+
+exit()
