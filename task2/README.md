@@ -5,6 +5,9 @@
 ## icmp_discovery.py
 A simple scanner that conducts an ICMP Ping scan to 255 addresses within a network. Used to identify hosts present within the network.
 
+## ping_DoS.py
+An script that investigates how a ping message fragmented with a large payload could crash the destination host upon reassembly.
+
 ## syn_flooding.py
 A script that takes in the target IP address as an argument, to conduct a SYN flooding attack on the target IP specified. It also includes a source IP spoofer. Packet data, size and target port can be modified.
 
@@ -15,7 +18,8 @@ A script that takes in a number of arguments, to conduct an ARP Poisoning attack
 
 *Usage: python arp_poisoning.py -ti <target_ip> -tm <target_mac> -fi <fake_ip> -fm <fake_mac> -c <count>"*
 
-
 ## stp_root_attack.py
 
+  
+  
 ## eigrp_route_poisoning.pu
