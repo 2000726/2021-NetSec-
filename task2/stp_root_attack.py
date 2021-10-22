@@ -48,9 +48,7 @@ def main():
         sys.exit(0)
         
     else:
-        print('[-]Please, use --rogue-mac or -r to set the Rogue MAC Address!')
-        print('[!]Example: -r 00:00:00:00:00:12')
-        print('[?] -h for help')
+        parser.print_help()
         sys.exit(1)
         
 main()
