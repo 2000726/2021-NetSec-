@@ -46,21 +46,22 @@ def main():
                     print('[-]Please, use --bridge-mac or -bg to set a Bridge MAC Address!')
                     print('[!]Example: -bg 01:80:c2:00:00:00')
                     print('[?] -h for help')
-                    exit()
+                    sys.exit(1)
             else:
                 print('[-]Please, use --root-mac or -rt to set a Root MAC Address!')
                 print('[!]Example: -rt 01:80:c2:00:00:00')
                 print('[?] -h for help')
-                exit()
+                sys.exit(1)
         else:
             print('[-]Please, use --dest-mac or -dest to set a Destinition MAC Address!')
             print('[!]Example: -dest 01:80:c2:00:00:00')
             print('[?] -h for help')
-            exit()
+            sys.exit(1)
     else:
         print('[-]Please, use --src-mac or -src to set a source MAC Address!')
         print('[!]Example: -src 01:80:c2:00:00:00')
         print('[?] -h for help')
-        exit()
+        sys.exit(1)
 
 main()
+sys.exit(0)
