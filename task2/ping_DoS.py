@@ -25,6 +25,6 @@ except:
   print('[-]Please, use --target-ip or -t to set a Target IP Address!')
   print('[!]Example: -t 10.20.30.40')
   print('[?] -h for help')
-  exit()
+  sys.exit(1)
   
-exit()
+sys.exit(0)
