@@ -22,7 +22,7 @@ def main():
         sys.exit(1)
     
     # Checks if argument is not empty
-    if args.target_ip is not None and args.target_port not None and args.tcp_flag is not None:
+    if args.target_ip is not None and args.target_port is not None and args.tcp_flag is not None:
         target_ip = args.target_ip # target IP address (should be a testing router/firewall)
 
         target_port = int(args.target_port) # the target port u want to flood
