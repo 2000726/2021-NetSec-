@@ -58,21 +58,22 @@ def main():
                     print('[-]Please, use --origin-router or -org to set a origin router IP Address!')
                     print('[!]Example: -org 10.20.30.40')
                     print('[?] -h for help')
-                    exit()
+                    sys.exit(1)
             else:
                 print('[-]Please, use --nexthop-ip or -nxt to set a nexthop IP Address!')
                 print('[!]Example: -nxt 10.20.30.40')
                 print('[?] -h for help')
-                exit()
+                sys.exit(1)
         else:
             print('[-]Please, use --dest-ip or -dest to set a destinition IP Address!')
             print('[!]Example: -dest 10.20.30.40')
             print('[?] -h for help')
-            exit()
+            sys.exit(1)
     else:
         print('[-]Please, use --src-ip or -src to set a source IP Address!')
         print('[!]Example: -src 10.20.30.40')
         print('[?] -h for help')
-        exit()
+        sys.exit(1)
 
 main()
+sys.exit(0)
