@@ -22,6 +22,7 @@ def main():
         # print('[-]Please, use --fake-mac or -fm to set a fake MAC address!')
         # print('[!]Example: -fm aa:bb:cc:11:22:33')
         # print('[?] -h for help')
+        parser.print_help()
         print('''\nusage: arp_poisoning_cmd.py [-h] [--target-ip TARGET_IP]
                             [--target-mac TARGET_MAC] [--fake-ip FAKE_IP]
                             [--fake-mac FAKE_MAC] [--count COUNT] [--version]
@@ -40,7 +41,7 @@ optional arguments:
   --version, -v         Show program's version number and exit
 Usage: python3 arp_poisoning_cmd.py -ti 10.20.30.40 -tm 11:22:33:aa:bb:cc -fi
 10.20.30.41 -fm aa:bb:cc:11:22:33 -c 10''')
-        exit()
+        sys.exit(1)
     
     else:
         arpPacket = ARP()   # Initialise ARP Packet
@@ -73,3 +74,4 @@ Usage: python3 arp_poisoning_cmd.py -ti 10.20.30.40 -tm 11:22:33:aa:bb:cc -fi
                 send(arpPacket)
 
 main()
+sys.exit(0)
