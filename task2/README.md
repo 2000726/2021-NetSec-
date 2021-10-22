@@ -6,8 +6,8 @@ A simple scanner that conducts an ICMP Ping scan to 255 addresses within a netwo
 ## ping_DoS.py
 An script that investigates how a ping message fragmented with a large payload could crash the destination host upon reassembly.
 
-## syn_flooding.py
-A script that takes in the target IP address as an argument, to conduct a SYN flooding attack on the target IP specified. It also includes a source IP spoofer. Packet data, size and target port can be modified.
+## tcp_flooding.py
+A script that takes in the target IP address, port to flood, and TCP flags to use, as the arguments, to conduct a type of TCP Flag flooding attack on the target IP specified. It also includes a source IP spoofer. Packet data, size and target port can be modified.
 
 *Usage: python syn_flooding.py -t <IP Address>*
 
