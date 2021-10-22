@@ -10,7 +10,7 @@ def main():
     parser.add_argument('--target-ip', '-t', help='Target IP address')
     parser.add_argument('--target-port', '-p', help='Target Port')
     parser.add_argument('--tcp-flag', '-f', help='TCP Flag')
-    parser.epilog = "Usage: python syn_flooding.py -t <IP Address>"        
+    parser.epilog = "Usage: python tcp_flooding.py -t <IP Address> -p <Target Port> -f <TCP Flags>"         
     args = parser.parse_args()
     
 
