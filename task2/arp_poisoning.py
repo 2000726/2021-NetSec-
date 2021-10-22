@@ -23,24 +23,6 @@ def main():
         # print('[!]Example: -fm aa:bb:cc:11:22:33')
         # print('[?] -h for help')
         parser.print_help()
-        print('''\nusage: arp_poisoning_cmd.py [-h] [--target-ip TARGET_IP]
-                            [--target-mac TARGET_MAC] [--fake-ip FAKE_IP]
-                            [--fake-mac FAKE_MAC] [--count COUNT] [--version]
-optional arguments:
-  -h, --help            Show this help message and exit
-  --target-ip TARGET_IP, -ti TARGET_IP
-                        Target IP address, x.x.x.x
-  --target-mac TARGET_MAC, -tm TARGET_MAC
-                        Target MAC address, xx:xx:xx:xx:xx:xx
-  --fake-ip FAKE_IP, -fi FAKE_IP
-                        Fake / Spoofed IP address, y.y.y.y
-  --fake-mac FAKE_MAC, -fm FAKE_MAC
-                        Fake / Spoofed MAC address, yy:yy:yy:yy:yy:yy
-  --count COUNT, -c COUNT
-                        Number of packets
-  --version, -v         Show program's version number and exit
-Usage: python3 arp_poisoning_cmd.py -ti 10.20.30.40 -tm 11:22:33:aa:bb:cc -fi
-10.20.30.41 -fm aa:bb:cc:11:22:33 -c 10''')
         sys.exit(1)
     
     else:
