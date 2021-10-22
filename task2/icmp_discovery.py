@@ -21,4 +21,4 @@ for i in range(1,255):
     print("Host: " + message.src)
     hosts.append(message.src)
     
-
+sys.exit(0)
