@@ -22,9 +22,10 @@ try:
     send(fragment(ip/ICMP()/(message*60000)))
    
 except:
-  print('[-]Please, use --target-ip or -t to set a Target IP Address!')
-  print('[!]Example: -t 10.20.30.40')
-  print('[?] -h for help')
+  parser.print_help()
+  #print('[-]Please, use --target-ip or -t to set a Target IP Address!')
+  #print('[!]Example: -t 10.20.30.40')
+  #print('[?] -h for help')
   sys.exit(1)
   
 sys.exit(0)
